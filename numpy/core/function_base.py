@@ -361,6 +361,49 @@ def geomspace(start, stop, num=50, endpoint=True, dtype=None):
 
     return result.astype(dtype)
 
+def linspace_logical(start, stop, num=50, endpoint=True, retstep=False, dtype=None):
+    """
+    Returns a logical array, with stop - start + 1
+    elements, of num evenly spaced true values.
+
+    Parameters
+    ----------
+    start : scalar
+        The starting value of the sequence.
+    stop : scalar
+        The end value of the sequence, unless `endpoint` is set to False.
+        In that case, the sequence consists of all but the last of ``num + 1``
+        evenly spaced samples, so that `stop` is excluded.  Note that the step
+        size changes when `endpoint` is False.
+    num : int, optional
+        Number of samples to generate. Default is 50. Must be non-negative.
+    endpoint : bool, optional
+        If True, `stop` is the last sample. Otherwise, it is not included.
+        Default is True.
+    retstep : bool, optional
+        If True, return (`samples`, `step`), where `step` is the spacing
+        between samples.
+    dtype : dtype, optional
+        The type of the output array.  If `dtype` is not given, infer the data
+        type from the other input arguments.
+
+    Returns
+    -------
+    samples : ndarray
+        `num` True values, equally spaced in an array from integers start to stop (inclusive).
+
+    """
+    int_array = linspace(start, stop, num, endpoint, retstep).astype(int)
+    int_array_full = range(start, stop + 1)
+    logical_array = []
+    j = 0
+    for i in int_array_full:
+        if int_array_full[i] == int_array[j]:
+            logical_array += [True]
+            j += 1
+        else:
+            logical_array += [False]
+    return np.array(logical_array)
 
 #always succeed
 def add_newdoc(place, obj, doc):
